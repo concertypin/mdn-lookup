@@ -1,4 +1,4 @@
-# <img src="images/logo.png" alt="logo" height="24"/> mdnlookup 
+# <img src="images/logo.png" alt="logo" height="48"/> mdnlookup 
 
 A tool to fetch and summarize developer documentation from [MDN Web Docs](https://developer.mozilla.org/).
 
