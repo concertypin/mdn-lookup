@@ -8,6 +8,14 @@ A tool to fetch and summarize developer documentation from [MDN Web Docs](https:
 - Returns a summary (first paragraph) and a link to the full documentation.
 - Exposes an MCP-compatible tool server over stdio.
 
+## Available Tools
+
+### mdnlookup
+
+- **Description:** Fetches and summarizes developer documentation from MDN based on a search query.
+- **Parameters:**
+  - `query` (string): The search term or API/method name you want documentation for.
+
 ## Installation
 
 Clone the repository and install dependencies:
@@ -56,9 +64,9 @@ VS Code (.vscode/settings.json)
     },
 ```
 
-### Example: Querying the Tool
+## Example: Using the Tool
 
-If you have an MCP-compatible client, you can send a request like:
+You can use the `mdnlookup` tool by sending a request from any MCP-compatible client:
 
 ```json
 {
