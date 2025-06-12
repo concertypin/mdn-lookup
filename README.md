@@ -33,7 +33,7 @@ npm install
 
 ## Usage
 
-This tool is designed to be used as an MCP tool server. You can run it directly:
+This tool is designed to be used as an MCP tool server. You can run it directly using Node:
 
 ```sh
 node index.js
@@ -67,6 +67,45 @@ VS Code (.vscode/settings.json)
         },
         "inputs": []
     },
+```
+
+## Run with Docker
+
+You can use Docker to run the mdnlookup MCP server without installing Node.js or dependencies locally.
+
+**Pull the Docker image from Docker Hub:**
+```sh
+docker pull babymanisha/mdnlookup:latest
+```
+
+**Or build the Docker image locally:**
+```sh
+docker build -t mdnlookup .
+```
+
+**Run the server:**
+```sh
+docker run -i babymanisha/mdnlookup:latest
+```
+_or, if you built locally:_
+```sh
+docker run -i mdnlookup
+```
+
+This will start the MCP server over stdio inside the container, ready to be used by any MCP-compatible client or editor (such as VS Code).
+
+To configure VS Code to use the Dockerized server, set the command to:
+```json
+{
+  "mcpServers": {
+    "mdnlookup": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "mdnlookup"
+      ]
+    }
+  }
+}
 ```
 
 ## Example: Using the Tool
