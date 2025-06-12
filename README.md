@@ -28,15 +28,28 @@ node index.js
 
 It will start an MCP server over stdio, ready to accept requests.
 
-### Example: Configure in MCP Client (example: VS Code)
-.vscode/settings.json
+### Example: Configure in MCP Client 
+```
+{
+  "mcpServers": {
+    "SmartDeveloperAssistant": {
+      "command": "node",
+      "args": [
+        "</absolute/path/to>/mdn-lookup/index.js"
+      ]
+    }
+  }
+}
+```
+
+VS Code (.vscode/settings.json)
 ``` 
 "mcp": {
         "servers": {
             "mdnlookup": {
                 "type": "stdio",
                 "command": "node",
-                "args": ["<path>/mdn-lookup/index.js"]
+                "args": ["</absolute/path/to>/mdn-lookup/index.js"]
             }
         },
         "inputs": []
