@@ -71,7 +71,7 @@ VS Code (.vscode/settings.json)
 
 ## Run with Docker
 
-You can use Docker to run the mdnlookup MCP server without installing Node.js or dependencies locally.
+You can use Docker to run the mdnlookup MCP server without installing Node.js or dependencies locally or using https://hub.docker.com/r/babymanisha/mdnlookup
 
 **Pull the Docker image from Docker Hub:**
 ```sh
