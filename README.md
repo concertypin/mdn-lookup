@@ -123,6 +123,10 @@ No additional configuration is required. The tool uses the MDN public API and fe
 
 ISC
 
+## See Also
+
+- [mdn-lookup listing on MCP.so](https://mcp.so/server/mdn-lookup/Baby%20Manisha%20Sunkara)
+
 --
 
 Thanks
