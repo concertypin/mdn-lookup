@@ -12,6 +12,8 @@ By exposing an MCP-compatible tool server over stdio, mdnlookup makes it easy to
 - Search MDN for documentation using a query string.
 - Returns a summary (first paragraph) and a link to the full documentation.
 - Exposes an MCP-compatible tool server over stdio.
+- **NEW**: HTTP API with streaming support using Hono framework.
+- **NEW**: Cloudflare Workers compatible for edge deployment.
 
 ## Available Tools
 
@@ -33,6 +35,8 @@ npm install
 
 ## Usage
 
+### MCP Tool Server (stdio)
+
 This tool is designed to be used as an MCP tool server. You can run it directly using Node:
 
 ```sh
@@ -40,6 +44,45 @@ node index.js
 ```
 
 It will start an MCP server over stdio, ready to accept requests.
+
+### HTTP API Server
+
+You can also run the tool as an HTTP server using Hono:
+
+```sh
+npm run serve
+# or directly:
+node server.js
+```
+
+This will start an HTTP server on port 3000 (or the PORT environment variable) with the following endpoints:
+
+- `GET /` - API information and available endpoints
+- `GET /lookup?q=<query>` - Search MDN documentation
+- `POST /lookup` - Search MDN documentation (JSON body: `{"query": "search term"}`)
+- `GET /stream-lookup?q=<query>` - Search MDN with streaming response
+- `POST /stream-lookup` - Search MDN with streaming response (JSON body)
+
+#### HTTP API Examples
+
+**Simple lookup:**
+```bash
+curl "http://localhost:3000/lookup?q=Array.prototype.map"
+```
+
+**POST request:**
+```bash
+curl -X POST http://localhost:3000/lookup \
+  -H "Content-Type: application/json" \
+  -d '{"query": "fetch API"}'
+```
+
+**Streaming response:**
+```bash
+curl "http://localhost:3000/stream-lookup?q=Promise"
+```
+
+The streaming endpoints return newline-delimited JSON with progress updates and final results.
 
 ### Example: Configure in MCP Client 
 ```
@@ -106,6 +149,32 @@ To configure VS Code to use the Dockerized server, set the command to:
     }
   }
 }
+```
+
+## Deploy to Cloudflare Workers
+
+The HTTP server is compatible with Cloudflare Workers for edge deployment:
+
+1. **Install Wrangler CLI:**
+   ```sh
+   npm install -g wrangler
+   ```
+
+2. **Configure your Cloudflare account:**
+   ```sh
+   wrangler login
+   ```
+
+3. **Deploy to Cloudflare Workers:**
+   ```sh
+   wrangler deploy
+   ```
+
+The `wrangler.toml` configuration file is already included. After deployment, your MDN Lookup API will be available at your Cloudflare Workers URL with the same HTTP endpoints.
+
+**Example deployed usage:**
+```bash
+curl "https://your-worker.your-subdomain.workers.dev/lookup?q=WebGL"
 ```
 
 ## Example: Using the Tool

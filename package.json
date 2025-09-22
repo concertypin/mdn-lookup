@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "serve": "node server.js",
+    "dev": "node --watch server.js"
   },
   "keywords": [],
   "author": {
@@ -14,8 +17,11 @@
   },
   "license": "ISC",
   "dependencies": {
+    "@hono/node-server": "^1.19.4",
     "@modelcontextprotocol/sdk": "^1.12.1",
     "axios": "^1.9.0",
-    "cheerio": "^1.1.0"
+    "cheerio": "^1.1.0",
+    "hono": "^4.9.8",
+    "zod": "^3.25.76"
   }
 }
