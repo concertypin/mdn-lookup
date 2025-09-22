@@ -1,21 +1,41 @@
 {
-  "name": "mdnlookup",
-  "version": "1.0.0",
-  "description": "A tool to fetch and summarize developer documentation from MDN.",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": {
-    "name": "Baby Manisha Sunkara",
-    "email": "babymaneesha@gmail.com"
-  },
-  "license": "ISC",
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.1",
-    "axios": "^1.9.0",
-    "cheerio": "^1.1.0"
-  }
+    "name": "mdnlookup",
+    "version": "1.0.0",
+    "description": "A tool to fetch and summarize developer documentation from MDN.",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "prebuild": "pnpm run cf-typegen",
+        "preview": "pnpm run build && vite preview",
+        "deploy": "pnpm run build && wrangler deploy",
+        "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+        "inspect": "pnpx @modelcontextprotocol/inspector",
+        "postinstall": "pnpm run cf-typegen && pnpm exec simple-git-hooks",
+        "format": "node --experimental-strip-types node_modules/prettier/bin/prettier.cjs --write ."
+    },
+    "author": {
+        "name": "Baby Manisha Sunkara",
+        "email": "babymaneesha@gmail.com"
+    },
+    "repository": "https://github.com/BabyManisha/mdn-lookup",
+    "license": "ISC",
+    "dependencies": {
+        "@cloudflare/vite-plugin": "^1.13.19",
+        "@hono/mcp": "^0.1.5",
+        "@modelcontextprotocol/sdk": "^1.21.0",
+        "hono": "^4.10.4",
+        "zod": "^3.25"
+    },
+    "devDependencies": {
+        "cross-env": "^10.1.0",
+        "lint-staged": "^16.2.3",
+        "prettier": "^3.2.5",
+        "simple-git-hooks": "^2.13.1",
+        "typescript": "^5.9.3",
+        "vite": "^7.1.12",
+        "wrangler": "^4.45.4"
+    },
+    "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
 }
