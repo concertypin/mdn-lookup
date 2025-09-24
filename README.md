@@ -12,6 +12,9 @@ By exposing an MCP-compatible tool server over stdio, mdnlookup makes it easy to
 - Search MDN for documentation using a query string.
 - Returns a summary (first paragraph) and a link to the full documentation.
 - Exposes an MCP-compatible tool server over stdio.
+- **HTTP API** with streaming support using Hono framework.
+- **TypeScript** codebase with type safety and modern tooling.
+- **Cloudflare Workers** compatible for edge deployment with Vite bundling.
 
 ## Available Tools
 
@@ -31,15 +34,78 @@ cd mdn-lookup
 npm install
 ```
 
-## Usage
+## Build
 
-This tool is designed to be used as an MCP tool server. You can run it directly using Node:
+This project uses TypeScript with Vite for bundling:
 
 ```sh
-node index.js
+npm run build
+```
+
+This will:
+- Compile TypeScript files to JavaScript in the `dist/` directory
+- Bundle the Cloudflare Worker entry point in the `dist-worker/` directory
+
+## Usage
+
+### MCP Tool Server (stdio)
+
+This tool is designed to be used as an MCP tool server. Build and run:
+
+```sh
+npm run build
+npm start
+# or directly:
+node dist/mcp-server.js
 ```
 
 It will start an MCP server over stdio, ready to accept requests.
+
+### HTTP API Server
+
+You can also run the tool as an HTTP server using Hono:
+
+```sh
+npm run build
+npm run serve
+# or directly:
+node dist/server.js
+```
+
+For development with auto-rebuild:
+
+```sh
+npm run dev
+```
+
+This will start an HTTP server on port 3000 (or the PORT environment variable) with the following endpoints:
+
+- `GET /` - API information and available endpoints
+- `GET /lookup?q=<query>` - Search MDN documentation
+- `POST /lookup` - Search MDN documentation (JSON body: `{"query": "search term"}`)
+- `GET /stream-lookup?q=<query>` - Search MDN with streaming response
+- `POST /stream-lookup` - Search MDN with streaming response (JSON body)
+
+#### HTTP API Examples
+
+**Simple lookup:**
+```bash
+curl "http://localhost:3000/lookup?q=Array.prototype.map"
+```
+
+**POST request:**
+```bash
+curl -X POST http://localhost:3000/lookup \
+  -H "Content-Type: application/json" \
+  -d '{"query": "fetch API"}'
+```
+
+**Streaming response:**
+```bash
+curl "http://localhost:3000/stream-lookup?q=Promise"
+```
+
+The streaming endpoints return newline-delimited JSON with progress updates and final results.
 
 ### Example: Configure in MCP Client 
 ```
@@ -48,7 +114,7 @@ It will start an MCP server over stdio, ready to accept requests.
     "SmartDeveloperAssistant": {
       "command": "node",
       "args": [
-        "</absolute/path/to>/mdn-lookup/index.js"
+        "</absolute/path/to>/mdn-lookup/dist/mcp-server.js"
       ]
     }
   }
@@ -62,7 +128,7 @@ VS Code (.vscode/settings.json)
             "mdnlookup": {
                 "type": "stdio",
                 "command": "node",
-                "args": ["</absolute/path/to>/mdn-lookup/index.js"]
+                "args": ["</absolute/path/to>/mdn-lookup/dist/mcp-server.js"]
             }
         },
         "inputs": []
@@ -106,6 +172,36 @@ To configure VS Code to use the Dockerized server, set the command to:
     }
   }
 }
+```
+
+## Deploy to Cloudflare Workers
+
+The HTTP server is compatible with Cloudflare Workers for edge deployment using Vite for bundling:
+
+1. **Install Wrangler CLI:**
+   ```sh
+   npm install -g wrangler
+   ```
+
+2. **Configure your Cloudflare account:**
+   ```sh
+   wrangler login
+   ```
+
+3. **Build and deploy to Cloudflare Workers:**
+   ```sh
+   npm run build
+   wrangler deploy
+   ```
+
+The project includes:
+- `wrangler.toml` configuration file
+- Vite bundling for optimized Worker deployment
+- TypeScript support with proper build pipeline
+
+**Example deployed usage:**
+```bash
+curl "https://your-worker.your-subdomain.workers.dev/lookup?q=WebGL"
 ```
 
 ## Example: Using the Tool
