@@ -5,10 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "serve": "node server.js",
-    "dev": "node --watch server.js"
+    "build": "npm run build:node && npm run build:worker",
+    "build:node": "tsc",
+    "build:worker": "vite build",
+    "dev": "npm run build:node && node dist/server.js",
+    "dev:worker": "vite dev",
+    "preview": "vite preview",
+    "start": "node dist/mcp-server.js",
+    "serve": "node dist/server.js",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": {
@@ -23,5 +29,12 @@
     "cheerio": "^1.1.0",
     "hono": "^4.9.8",
     "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250924.0",
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7",
+    "vite-plugin-wrangler": "^0.1.1"
   }
 }

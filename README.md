@@ -12,8 +12,9 @@ By exposing an MCP-compatible tool server over stdio, mdnlookup makes it easy to
 - Search MDN for documentation using a query string.
 - Returns a summary (first paragraph) and a link to the full documentation.
 - Exposes an MCP-compatible tool server over stdio.
-- **NEW**: HTTP API with streaming support using Hono framework.
-- **NEW**: Cloudflare Workers compatible for edge deployment.
+- **HTTP API** with streaming support using Hono framework.
+- **TypeScript** codebase with type safety and modern tooling.
+- **Cloudflare Workers** compatible for edge deployment with Vite bundling.
 
 ## Available Tools
 
@@ -33,14 +34,29 @@ cd mdn-lookup
 npm install
 ```
 
+## Build
+
+This project uses TypeScript with Vite for bundling:
+
+```sh
+npm run build
+```
+
+This will:
+- Compile TypeScript files to JavaScript in the `dist/` directory
+- Bundle the Cloudflare Worker entry point in the `dist-worker/` directory
+
 ## Usage
 
 ### MCP Tool Server (stdio)
 
-This tool is designed to be used as an MCP tool server. You can run it directly using Node:
+This tool is designed to be used as an MCP tool server. Build and run:
 
 ```sh
-node index.js
+npm run build
+npm start
+# or directly:
+node dist/mcp-server.js
 ```
 
 It will start an MCP server over stdio, ready to accept requests.
@@ -50,9 +66,16 @@ It will start an MCP server over stdio, ready to accept requests.
 You can also run the tool as an HTTP server using Hono:
 
 ```sh
+npm run build
 npm run serve
 # or directly:
-node server.js
+node dist/server.js
+```
+
+For development with auto-rebuild:
+
+```sh
+npm run dev
 ```
 
 This will start an HTTP server on port 3000 (or the PORT environment variable) with the following endpoints:
@@ -91,7 +114,7 @@ The streaming endpoints return newline-delimited JSON with progress updates and 
     "SmartDeveloperAssistant": {
       "command": "node",
       "args": [
-        "</absolute/path/to>/mdn-lookup/index.js"
+        "</absolute/path/to>/mdn-lookup/dist/mcp-server.js"
       ]
     }
   }
@@ -105,7 +128,7 @@ VS Code (.vscode/settings.json)
             "mdnlookup": {
                 "type": "stdio",
                 "command": "node",
-                "args": ["</absolute/path/to>/mdn-lookup/index.js"]
+                "args": ["</absolute/path/to>/mdn-lookup/dist/mcp-server.js"]
             }
         },
         "inputs": []
@@ -153,7 +176,7 @@ To configure VS Code to use the Dockerized server, set the command to:
 
 ## Deploy to Cloudflare Workers
 
-The HTTP server is compatible with Cloudflare Workers for edge deployment:
+The HTTP server is compatible with Cloudflare Workers for edge deployment using Vite for bundling:
 
 1. **Install Wrangler CLI:**
    ```sh
@@ -165,12 +188,16 @@ The HTTP server is compatible with Cloudflare Workers for edge deployment:
    wrangler login
    ```
 
-3. **Deploy to Cloudflare Workers:**
+3. **Build and deploy to Cloudflare Workers:**
    ```sh
+   npm run build
    wrangler deploy
    ```
 
-The `wrangler.toml` configuration file is already included. After deployment, your MDN Lookup API will be available at your Cloudflare Workers URL with the same HTTP endpoints.
+The project includes:
+- `wrangler.toml` configuration file
+- Vite bundling for optimized Worker deployment
+- TypeScript support with proper build pipeline
 
 **Example deployed usage:**
 ```bash
