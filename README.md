@@ -1,8 +1,12 @@
-# <img src="images/logo.png" alt="logo" height="48"/> mdnlookup 
+This is modificated version of [mdn-lookup by Baby Manisha Sunkara](https://github.com/BabyManisha/mdn-lookup) for supporting Streamable HTTP transportation with WASI. Thanks!
+
+---
+
+# <img src="images/logo.png" alt="logo" height="48"/> mdnlookup
 
 A tool to fetch and summarize developer documentation from [MDN Web Docs](https://developer.mozilla.org/).
 
-**MDNlookup** is a developer productivity tool that streamlines access to [MDN Web Docs](https://developer.mozilla.org/) documentation directly from your development environment. 
+**MDNlookup** is a developer productivity tool that streamlines access to [MDN Web Docs](https://developer.mozilla.org/) documentation directly from your development environment.
 Designed for seamless integration with MCP-compatible clients and editors like VS Code, mdnlookup enables developers to quickly search for and retrieve concise, relevant documentation summaries for web APIs, JavaScript methods, and other web technologies—without leaving their workflow.
 
 By exposing an MCP-compatible tool server over stdio, mdnlookup makes it easy to automate documentation lookups and integrate them into custom toolchains or editor extensions. This helps developers save time, reduce context switching, and stay focused on coding.
@@ -41,7 +45,8 @@ node index.js
 
 It will start an MCP server over stdio, ready to accept requests.
 
-### Example: Configure in MCP Client 
+### Example: Configure in MCP Client
+
 ```
 {
   "mcpServers": {
@@ -56,7 +61,8 @@ It will start an MCP server over stdio, ready to accept requests.
 ```
 
 VS Code (.vscode/settings.json)
-``` 
+
+```
 "mcp": {
         "servers": {
             "mdnlookup": {
@@ -74,20 +80,25 @@ VS Code (.vscode/settings.json)
 You can use Docker to run the mdnlookup MCP server without installing Node.js or dependencies locally or using https://hub.docker.com/r/babymanisha/mdnlookup
 
 **Pull the Docker image from Docker Hub:**
+
 ```sh
 docker pull babymanisha/mdnlookup:latest
 ```
 
 **Or build the Docker image locally:**
+
 ```sh
 docker build -t mdnlookup .
 ```
 
 **Run the server:**
+
 ```sh
 docker run -i babymanisha/mdnlookup:latest
 ```
+
 _or, if you built locally:_
+
 ```sh
 docker run -i mdnlookup
 ```
@@ -95,14 +106,13 @@ docker run -i mdnlookup
 This will start the MCP server over stdio inside the container, ready to be used by any MCP-compatible client or editor (such as VS Code).
 
 To configure VS Code to use the Dockerized server, set the command to:
+
 ```json
 {
   "mcpServers": {
     "mdnlookup": {
       "command": "docker",
-      "args": [
-        "run", "-i", "mdnlookup"
-      ]
+      "args": ["run", "-i", "mdnlookup"]
     }
   }
 }
@@ -173,4 +183,3 @@ Thanks
 Happy Coding!!
 
 [Baby Manisha Sunkara 👩🏻‍💻](https://babymanisha.com)
-

@@ -1,15 +1,14 @@
+import { cloudflare } from '@cloudflare/vite-plugin'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  plugins: [cloudflare()],
   build: {
-    rollupOptions: {
-      input: './src/index.ts',
-      output: {
-        format: 'es',
-        entryFileNames: '[name].mjs',
-      },
+    lib: {
+      entry: "src/index.ts",
+      formats: ["es"],
     },
-    outDir: 'dist',
-    minify: true,
+    sourcemap: true,
   },
+  clearScreen: false,
 })
