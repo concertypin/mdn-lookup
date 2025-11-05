@@ -11,7 +11,8 @@
     "preview": "pnpm run build && vite preview",
     "deploy": "pnpm run build && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "postinstall": "pnpm run cf-typegen"
+    "postinstall": "pnpm run cf-typegen",
+    "inspect": "pnpx @modelcontextprotocol/inspector"
   },
   "author": {
     "name": "Baby Manisha Sunkara & concertypin(modification)",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "typescript": "^5.9.3",
-    "vite": "^7.1.12"
+    "vite": "^7.1.12",
+    "vitest": "^4.0.7"
   }
 }
