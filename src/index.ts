@@ -3,7 +3,9 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import * as cheerio from 'cheerio'
 import { z } from 'zod'
-
+type Bindings = {
+  PASSWORD: string
+}
 interface MdnDocument {
   mdn_url: string;
   score: number;
@@ -22,7 +24,7 @@ interface MdnSearchResponse {
   documents: MdnDocument[];
 }
 
-const app = new Hono()
+const app = new Hono<{ Bindings: Bindings }>()
 
 const mcpServer = new McpServer({
   name: 'mdnlookup',
@@ -38,7 +40,7 @@ mcpServer.tool(
     try {
       const searchUrl = `https://developer.mozilla.org/api/v1/search?q=${encodeURIComponent(query)}&locale=en-US`
       const searchRes = await fetch(searchUrl)
-      const searchJson: MdnSearchResponse = await searchRes.json()
+      const searchJson = await searchRes.json() satisfies MdnSearchResponse
       const results = searchJson.documents
 
       if (!results.length) {
